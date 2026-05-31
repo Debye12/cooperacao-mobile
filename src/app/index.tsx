@@ -1,98 +1,163 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useState } from "react";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { COLORS } from "@/constants/colors";
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+export default function WelcomeScreen() {
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+
+  const handleStart = () => {
+    if (!name || !age || parseInt(age) < 6 || parseInt(age) > 17) {
+      return;
+    }
+
+    const playerAge = parseInt(age);
+    const isChild = playerAge < 14;
+    const monthlyIncome = isChild ? 50 : 300;
+
+    console.log("Dados do jogador:", {
+      playerName: name,
+      playerAge,
+      isChild,
+      balance: monthlyIncome,
+      monthlyIncome,
+      currentMonth: 1,
+    });
+
+    // Depois vamos conectar ao GameContext
+    // e navegar para a tela presentation
+  };
+
+  const isValid =
+    name.trim() !== "" &&
+    age !== "" &&
+    parseInt(age) >= 6 &&
+    parseInt(age) <= 17;
+
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+    <SafeAreaView style={styles.container}>
+      <View style={styles.card}>
+        <View style={styles.header}>
+          <Text style={styles.title}>CooperAção Kids</Text>
 
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+          <Text style={styles.description}>
+            Vamos aprender a cuidar do dinheiro de forma divertida!
+          </Text>
+        </View>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+        <View style={styles.content}>
+          <Text style={styles.label}>Qual é o seu apelido?</Text>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
+          <TextInput
+            value={name}
+            onChangeText={setName}
+            placeholder="Digite seu apelido aqui..."
+            style={styles.input}
           />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+          <Text style={styles.label}>Quantos anos você tem?</Text>
+
+          <TextInput
+            value={age}
+            onChangeText={setAge}
+            keyboardType="numeric"
+            placeholder="Sua idade"
+            style={styles.input}
+          />
+
+          <TouchableOpacity
+            onPress={handleStart}
+            disabled={!isValid}
+            style={[styles.button, !isValid && styles.buttonDisabled]}
+          >
+            <Text style={styles.buttonText}>Começar Aventura!</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    backgroundColor: COLORS.background,
+    justifyContent: "center",
+    padding: 20,
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+
+  card: {
+    backgroundColor: COLORS.white,
+    borderRadius: 16,
+    borderWidth: 4,
+    borderColor: COLORS.dark,
+    overflow: "hidden",
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+
+  header: {
+    backgroundColor: COLORS.primary,
+    padding: 24,
+    alignItems: "center",
   },
+
   title: {
-    textAlign: 'center',
+    fontSize: 30,
+    fontWeight: "bold",
+    color: COLORS.dark,
+    textAlign: "center",
   },
-  code: {
-    textTransform: 'uppercase',
+
+  description: {
+    marginTop: 8,
+    color: COLORS.dark,
+    textAlign: "center",
+    fontSize: 16,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+
+  content: {
+    padding: 24,
+  },
+
+  label: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: COLORS.dark,
+    marginBottom: 8,
+  },
+
+  input: {
+    borderWidth: 2,
+    borderColor: COLORS.secondary,
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    fontSize: 16,
+    marginBottom: 20,
+  },
+
+  button: {
+    backgroundColor: COLORS.secondary,
+    paddingVertical: 16,
+    borderRadius: 10,
+    alignItems: "center",
+    marginTop: 10,
+  },
+
+  buttonDisabled: {
+    opacity: 0.5,
+  },
+
+  buttonText: {
+    color: COLORS.white,
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
