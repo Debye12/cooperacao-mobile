@@ -1,11 +1,14 @@
+import { GameProvider } from "@/context/GameContext";
 import { Stack } from "expo-router";
 
 export default function RootLayout() {
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}
-    />
+    <GameProvider>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      />
+    </GameProvider>
   );
 }

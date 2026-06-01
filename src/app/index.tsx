@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { useState } from "react";
 import {
   SafeAreaView,
@@ -9,21 +10,26 @@ import {
 } from "react-native";
 
 import { COLORS } from "@/constants/colors";
+import { useGame } from "@/context/GameContext";
 
 export default function WelcomeScreen() {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
+
+  const { updateGameState, resetGame } = useGame();
 
   const handleStart = () => {
     if (!name || !age || parseInt(age) < 6 || parseInt(age) > 17) {
       return;
     }
 
+    resetGame();
+
     const playerAge = parseInt(age);
     const isChild = playerAge < 14;
     const monthlyIncome = isChild ? 50 : 300;
 
-    console.log("Dados do jogador:", {
+    updateGameState({
       playerName: name,
       playerAge,
       isChild,
@@ -32,8 +38,7 @@ export default function WelcomeScreen() {
       currentMonth: 1,
     });
 
-    // Depois vamos conectar ao GameContext
-    // e navegar para a tela presentation
+    router.push("/presentation");
   };
 
   const isValid =
