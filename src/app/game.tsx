@@ -1,15 +1,30 @@
-import { Text, View } from "react-native";
+import { ScrollView } from "react-native";
+
+import MonthlyExpenses from "@/components/game/MonthlyExpenses";
+import PetInteraction from "@/components/game/PetInteraction";
+import VisualPiggyBank from "@/components/game/VisualPiggyBank";
 
 export default function GameScreen() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+    <ScrollView
+      style={{ flex: 1 }}
+      contentContainerStyle={{
+        padding: 16,
+        gap: 16,
       }}
     >
-      <Text>Game Screen</Text>
-    </View>
+      <PetInteraction />
+
+      <VisualPiggyBank />
+
+      <MonthlyExpenses
+        currentMonth={1}
+        balance={50}
+        petCost={15}
+        onExpensesConfirm={(expenses) => {
+          console.log("Gastos:", expenses);
+        }}
+      />
+    </ScrollView>
   );
 }
