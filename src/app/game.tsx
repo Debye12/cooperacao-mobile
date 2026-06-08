@@ -1,23 +1,182 @@
+import React from "react";
 import { ScrollView, Text, View } from "react-native";
 
-import MonthlyExpenses from "@/components/game/MonthlyExpenses";
-import PetInteraction from "@/components/game/PetInteraction";
-import VisualPiggyBank from "@/components/game/VisualPiggyBank";
+import AchievementSystem from "@/components/game/AchievementSystem";
+import GameNarrator from "@/components/game/GameNarrator";
+import MonthlyActions from "@/components/game/MonthlyActions";
 import { useGame } from "@/context/GameContext";
 
 export default function GameScreen() {
   const { gameState } = useGame();
 
+  const [showNarrator, setShowNarrator] = React.useState(true);
+
   const pets = {
-    dog: 15,
-    cat: 12,
-    hamster: 8,
-    fish: 5,
-    bird: 10,
-    turtle: 7,
+    dog: {
+      name: "Cachorrinho",
+      emoji: "🐶",
+      cost: 15,
+    },
+
+    cat: {
+      name: "Gatinho",
+      emoji: "🐱",
+      cost: 12,
+    },
+
+    hamster: {
+      name: "Hamster",
+      emoji: "🐹",
+      cost: 8,
+    },
+
+    fish: {
+      name: "Peixinho",
+      emoji: "🐠",
+      cost: 5,
+    },
+
+    bird: {
+      name: "Passarinho",
+      emoji: "🐦",
+      cost: 10,
+    },
+
+    turtle: {
+      name: "Tartaruga",
+      emoji: "🐢",
+      cost: 7,
+    },
   };
 
-  const petCost = pets[gameState.selectedPet as keyof typeof pets] || 15;
+  const characters = {
+    girl1: {
+      name: "Luna",
+      emoji: "👧🏻",
+    },
+
+    boy1: {
+      name: "Max",
+      emoji: "👦🏻",
+    },
+
+    girl2: {
+      name: "Sofia",
+      emoji: "👧🏽",
+    },
+
+    boy2: {
+      name: "Diego",
+      emoji: "👦🏽",
+    },
+
+    girl3: {
+      name: "Zara",
+      emoji: "👧🏿",
+    },
+
+    boy3: {
+      name: "Kael",
+      emoji: "👦🏿",
+    },
+  };
+
+  const selectedPet = pets[gameState.selectedPet as keyof typeof pets];
+
+  const selectedCharacter =
+    characters[gameState.selectedCharacter as keyof typeof characters];
+
+  const gameEnded = gameState.currentMonth > 12;
+
+  React.useEffect(() => {
+    if (!gameEnded) {
+      setShowNarrator(true);
+    }
+  }, [gameState.currentMonth, gameEnded]);
+
+  const handleNarratorComplete = () => {
+    setShowNarrator(false);
+  };
+
+  if (showNarrator && !gameEnded) {
+    return (
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{
+          padding: 16,
+        }}
+      >
+        <AchievementSystem />
+
+        <View
+          style={{
+            backgroundColor: "#FFFFFF",
+            padding: 20,
+            borderRadius: 16,
+            marginBottom: 20,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: 16,
+              marginBottom: 16,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 48,
+              }}
+            >
+              {selectedCharacter?.emoji}
+            </Text>
+
+            <Text
+              style={{
+                fontSize: 32,
+              }}
+            >
+              ❤️
+            </Text>
+
+            <Text
+              style={{
+                fontSize: 48,
+              }}
+            >
+              {selectedPet?.emoji}
+            </Text>
+          </View>
+
+          <Text
+            style={{
+              fontSize: 28,
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            Capítulo {gameState.currentMonth}
+          </Text>
+
+          <Text
+            style={{
+              fontSize: 18,
+              textAlign: "center",
+              marginTop: 8,
+            }}
+          >
+            {gameState.playerName}
+            {" & "}
+            {selectedPet?.name}
+          </Text>
+        </View>
+
+        <GameNarrator onComplete={handleNarratorComplete} />
+      </ScrollView>
+    );
+  }
 
   return (
     <ScrollView
@@ -27,54 +186,97 @@ export default function GameScreen() {
         gap: 16,
       }}
     >
-      <View
-        style={{
-          backgroundColor: "white",
-          padding: 16,
-          borderRadius: 12,
-          borderWidth: 2,
-        }}
-      >
-        <Text
+      <AchievementSystem />
+
+      {!gameEnded && (
+        <View
           style={{
-            fontSize: 22,
-            fontWeight: "bold",
+            backgroundColor: "#FFFFFF",
+            padding: 20,
+            borderRadius: 16,
           }}
         >
-          📅 Mês {gameState.currentMonth}
-        </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: 16,
+              marginBottom: 16,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 48,
+              }}
+            >
+              {selectedCharacter?.emoji}
+            </Text>
 
-        <Text
-          style={{
-            fontSize: 18,
-            marginTop: 8,
-          }}
-        >
-          💰 Saldo: R$ {gameState.balance.toFixed(0)}
-        </Text>
+            <Text
+              style={{
+                fontSize: 32,
+              }}
+            >
+              ❤️
+            </Text>
 
-        <Text
-          style={{
-            fontSize: 18,
-            marginTop: 4,
-          }}
-        >
-          🌱 Investimentos: R$ {gameState.investmentBalance.toFixed(0)}
-        </Text>
-      </View>
+            <Text
+              style={{
+                fontSize: 48,
+              }}
+            >
+              {selectedPet?.emoji}
+            </Text>
+          </View>
 
-      <PetInteraction />
+          <Text
+            style={{
+              fontSize: 28,
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            Capítulo {gameState.currentMonth}
+            {" de 12"}
+          </Text>
 
-      <VisualPiggyBank />
+          <View
+            style={{
+              marginTop: 16,
+              gap: 8,
+            }}
+          >
+            <Text>💰 Carteira: R$ {gameState.balance.toFixed(0)}</Text>
 
-      <MonthlyExpenses
-        currentMonth={gameState.currentMonth}
-        balance={gameState.balance}
-        petCost={petCost}
-        onExpensesConfirm={(expenses) => {
-          console.log("Gastos:", expenses);
-        }}
-      />
+            <Text>
+              🌱 Guardado: R$ {gameState.investmentBalance.toFixed(0)}
+            </Text>
+
+            <Text>❤️ Pet: {gameState.petHealth.toFixed(0)}%</Text>
+
+            <Text>🏅 Selos: {gameState.achievements.length}</Text>
+          </View>
+
+          {gameState.personalGoal && (
+            <View
+              style={{
+                marginTop: 16,
+              }}
+            >
+              <Text>🎯 Meta: {gameState.personalGoal.name}</Text>
+
+              <Text>
+                R$ {gameState.personalGoal.currentAmount.toFixed(0)}
+                {" / R$ "}
+                {gameState.personalGoal.targetAmount}
+              </Text>
+            </View>
+          )}
+        </View>
+      )}
+
+      <MonthlyActions />
     </ScrollView>
   );
 }
