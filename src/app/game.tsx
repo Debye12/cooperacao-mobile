@@ -110,7 +110,9 @@ export default function GameScreen() {
 
         <View
           style={{
-            backgroundColor: "#FFFFFF",
+            backgroundColor: "#F3F6FA",
+            borderWidth: 3,
+            borderColor: "#003B49",
             padding: 20,
             borderRadius: 16,
             marginBottom: 20,
@@ -191,7 +193,9 @@ export default function GameScreen() {
       {!gameEnded && (
         <View
           style={{
-            backgroundColor: "#FFFFFF",
+            backgroundColor: "#F3F6FA",
+            borderWidth: 3,
+            borderColor: "#003B49",
             padding: 20,
             borderRadius: 16,
           }}
@@ -243,19 +247,132 @@ export default function GameScreen() {
 
           <View
             style={{
-              marginTop: 16,
-              gap: 8,
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: 12,
+              marginTop: 20,
             }}
           >
-            <Text>💰 Carteira: R$ {gameState.balance.toFixed(0)}</Text>
+            <View
+              style={{
+                backgroundColor: "#57D86D",
+                borderRadius: 12,
+                paddingVertical: 12,
+                paddingHorizontal: 20,
+                minWidth: 120,
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  color: "#FFF",
+                  fontSize: 14,
+                }}
+              >
+                💰 Carteira
+              </Text>
 
-            <Text>
-              🌱 Guardado: R$ {gameState.investmentBalance.toFixed(0)}
-            </Text>
+              <Text
+                style={{
+                  color: "#FFF",
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+              >
+                R$ {gameState.balance.toFixed(0)}
+              </Text>
+            </View>
 
-            <Text>❤️ Pet: {gameState.petHealth.toFixed(0)}%</Text>
+            <View
+              style={{
+                backgroundColor: "#55B6FF",
+                borderRadius: 12,
+                paddingVertical: 12,
+                paddingHorizontal: 20,
+                minWidth: 120,
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  color: "#FFF",
+                  fontSize: 14,
+                }}
+              >
+                🌱 Guardado
+              </Text>
 
-            <Text>🏅 Selos: {gameState.achievements.length}</Text>
+              <Text
+                style={{
+                  color: "#FFF",
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+              >
+                R$ {gameState.investmentBalance.toFixed(0)}
+              </Text>
+            </View>
+
+            <View
+              style={{
+                backgroundColor: "#FF6BA6",
+                borderRadius: 12,
+                paddingVertical: 12,
+                paddingHorizontal: 20,
+                minWidth: 120,
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  color: "#FFF",
+                  fontSize: 14,
+                }}
+              >
+                ❤️ Pet
+              </Text>
+
+              <Text
+                style={{
+                  color: "#FFF",
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+              >
+                {gameState.petHealth.toFixed(0)}%
+              </Text>
+            </View>
+
+            <View
+              style={{
+                backgroundColor: "#FFA233",
+                borderRadius: 12,
+                paddingVertical: 12,
+                paddingHorizontal: 20,
+                minWidth: 120,
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  color: "#FFF",
+                  fontSize: 14,
+                }}
+              >
+                🏅 Selos
+              </Text>
+
+              <Text
+                style={{
+                  color: "#FFF",
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+              >
+                {gameState.achievements.length}
+              </Text>
+            </View>
           </View>
 
           {gameState.personalGoal && (
