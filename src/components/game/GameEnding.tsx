@@ -68,6 +68,26 @@ export default function GameEnding() {
   const restartGame = () => {
     router.replace("/");
   };
+
+  const achievementNames: Record<string, string> = {
+    first_investment: "🌱 Primeiro Investimento",
+    pet_master: "🏆 Mestre dos Pets",
+    goal_setter: "🎯 Sonhador",
+    saver: "💎 Poupador Expert",
+    helper: "😇 Anjinho Bondoso",
+    resist_temptation: "🛡️ Resistente",
+    goal_achiever: "🏅 Realizador",
+    pet_lover: "💝 Amor de Pet",
+    smart_spender: "🧠 Gastador Inteligente",
+    social_butterfly: "🦋 Borboleta Social",
+    emergency_prepared: "🚨 Sempre Preparado",
+    growth_expert: "📈 Expert em Crescimento",
+    balanced_life: "⚖️ Vida Equilibrada",
+    wise_chooser: "🦉 Escolhedor Sábio",
+    generous_heart: "❤️ Coração Generoso",
+    future_planner: "🔮 Planejador do Futuro",
+  };
+
   return (
     <ScrollView
       contentContainerStyle={{
@@ -99,9 +119,27 @@ export default function GameEnding() {
           <Text style={styles.sectionTitle}>🏅 Suas Conquistas</Text>
 
           {gameState.achievements.map((achievement) => (
-            <Text key={achievement} style={styles.achievement}>
-              • {achievement}
-            </Text>
+            <View
+              key={achievement}
+              style={{
+                backgroundColor: "#FFF8D6",
+                borderRadius: 12,
+                padding: 12,
+                marginBottom: 8,
+                borderWidth: 1,
+                borderColor: "#F2C94C",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  color: "#003B49",
+                }}
+              >
+                {achievementNames[achievement] || achievement}
+              </Text>
+            </View>
           ))}
         </View>
       )}
@@ -133,12 +171,12 @@ export default function GameEnding() {
 }
 const styles = {
   performanceCard: {
-    backgroundColor: COLORS.white,
+    backgroundColor: "#F3F6FA",
     borderRadius: 16,
     padding: 20,
     alignItems: "center" as const,
-    borderWidth: 2,
-    borderColor: COLORS.border,
+    borderWidth: 3,
+    borderColor: "#003B49",
   },
 
   emoji: {
@@ -218,7 +256,7 @@ const styles = {
   },
 
   button: {
-    backgroundColor: COLORS.secondary,
+    backgroundColor: "#7AC142",
     paddingVertical: 16,
     borderRadius: 12,
     marginTop: 20,

@@ -376,12 +376,44 @@ export default function MonthlyActions() {
             <Text>💳 Empréstimo: R$ {gameState.parentLoan.amount}</Text>
           </View>
         )}
-        <View>
-          {tabs.map((tab) => (
-            <Text key={tab.id} onPress={() => setActiveTab(tab.id)}>
-              {tab.emoji} {tab.name}
-            </Text>
-          ))}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            backgroundColor: "#FFFFFF",
+            borderRadius: 16,
+            padding: 8,
+            borderWidth: 2,
+            borderColor: "#D8D8D8",
+          }}
+        >
+          {tabs.map((tab) => {
+            const isActive = activeTab === tab.id;
+
+            return (
+              <Text
+                key={tab.id}
+                onPress={() => setActiveTab(tab.id)}
+                style={{
+                  flex: 1,
+                  textAlign: "center",
+                  paddingVertical: 14,
+                  borderRadius: 12,
+                  overflow: "hidden",
+
+                  backgroundColor: isActive ? "#3267E3" : "#F1F1F1",
+
+                  color: isActive ? "#FFFFFF" : "#333333",
+
+                  fontWeight: "bold",
+                }}
+              >
+                {tab.emoji}
+                {"\n"}
+                {tab.name}
+              </Text>
+            );
+          })}
         </View>
         {activeTab === "expenses" && !needsVet && (
           <MonthlyExpenses
@@ -417,72 +449,325 @@ export default function MonthlyActions() {
   }
   if (currentStep === "investment") {
     const availableForInvestment = calculateRemainingAfterExpenses();
+
     if (availableForInvestment < 10) {
       return (
-        <View>
-          <Text>😅 Saldo baixo</Text>
+        <View
+          style={{
+            backgroundColor: "#FFFFFF",
+            padding: 20,
+            borderRadius: 16,
+            borderWidth: 2,
+            borderColor: "#FFD166",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 24,
+              textAlign: "center",
+              marginBottom: 10,
+            }}
+          >
+            😅
+          </Text>
 
-          <Text>Sobrou apenas R$ {availableForInvestment.toFixed(0)}</Text>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: "bold",
+              textAlign: "center",
+              marginBottom: 10,
+            }}
+          >
+            Saldo Baixo
+          </Text>
 
-          <Text>É melhor não investir agora.</Text>
+          <Text
+            style={{
+              textAlign: "center",
+              marginBottom: 10,
+            }}
+          >
+            Sobrou apenas R$ {availableForInvestment.toFixed(0)}
+          </Text>
 
-          <Text onPress={handleInvestmentConfirm}>Próximo mês</Text>
+          <Text
+            style={{
+              textAlign: "center",
+              marginBottom: 20,
+            }}
+          >
+            É melhor guardar dinheiro no próximo mês.
+          </Text>
+
+          <Text
+            onPress={handleInvestmentConfirm}
+            style={{
+              backgroundColor: "#69D17D",
+              color: "#FFF",
+              textAlign: "center",
+              padding: 14,
+              borderRadius: 10,
+              fontWeight: "bold",
+            }}
+          >
+            Próximo Mês
+          </Text>
         </View>
       );
     }
+
     const investmentOptions = [
       {
         amount: 0,
         label: "Não Guardar",
         emoji: "🛍️",
       },
-
       {
         amount: Math.floor(availableForInvestment * 0.3),
-
         label: "Pouco",
-
         emoji: "🌱",
       },
-
       {
         amount: Math.floor(availableForInvestment * 0.5),
-
         label: "Médio",
-
         emoji: "🌿",
       },
-
       {
         amount: Math.floor(availableForInvestment * 0.7),
-
         label: "Muito",
-
         emoji: "🌳",
       },
     ].filter((option) => option.amount <= availableForInvestment);
+
     return (
       <View
         style={{
-          gap: 16,
+          backgroundColor: "#FFFFFF",
+          borderRadius: 16,
+          borderWidth: 2,
+          borderColor: "#BFD7FF",
+          overflow: "hidden",
         }}
       >
-        <Text>Vamos Fazer o Dinheiro Crescer</Text>
-
-        <Text>Disponível: R$ {availableForInvestment.toFixed(0)}</Text>
-
-        {extraEarnings > 0 && <Text>+R$ {extraEarnings} extras</Text>}
-        {investmentOptions.map((option) => (
+        <View
+          style={{
+            backgroundColor: "#DCE8F8",
+            padding: 16,
+            alignItems: "center",
+          }}
+        >
           <Text
-            key={option.amount}
-            onPress={() => setInvestmentAmount(option.amount.toString())}
+            style={{
+              fontSize: 20,
+              fontWeight: "bold",
+              color: "#003B49",
+            }}
           >
-            {option.emoji} {option.label} - R$ {option.amount}
+            🌱 Vamos Fazer o Dinheiro Crescer
           </Text>
-        ))}
-        <Text onPress={() => setCurrentStep("expenses")}>Voltar</Text>
+        </View>
 
-        <Text onPress={handleInvestmentConfirm}>Confirmar</Text>
+        <View
+          style={{
+            padding: 16,
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: "#FFFBE8",
+              borderWidth: 1,
+              borderColor: "#F2C94C",
+              borderRadius: 12,
+              padding: 16,
+              marginBottom: 16,
+            }}
+          >
+            <Text
+              style={{
+                textAlign: "center",
+                fontWeight: "bold",
+                marginBottom: 8,
+              }}
+            >
+              Como Funciona?
+            </Text>
+
+            <Text
+              style={{
+                textAlign: "center",
+              }}
+            >
+              É como plantar uma sementinha.
+            </Text>
+
+            <Text
+              style={{
+                textAlign: "center",
+              }}
+            >
+              Quanto mais tempo ela fica guardada,
+            </Text>
+
+            <Text
+              style={{
+                textAlign: "center",
+              }}
+            >
+              mais dinheiro ela produz.
+            </Text>
+          </View>
+
+          <View
+            style={{
+              backgroundColor: "#EAF8EF",
+              borderWidth: 1,
+              borderColor: "#69D17D",
+              borderRadius: 12,
+              padding: 16,
+              alignItems: "center",
+              marginBottom: 16,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+              }}
+            >
+              Você Tem Disponível
+            </Text>
+
+            <Text
+              style={{
+                fontSize: 34,
+                fontWeight: "bold",
+                color: "#1EA84A",
+              }}
+            >
+              R$ {availableForInvestment.toFixed(0)}
+            </Text>
+
+            {extraEarnings > 0 && (
+              <Text
+                style={{
+                  color: "#1EA84A",
+                }}
+              >
+                +R$ {extraEarnings} extras
+              </Text>
+            )}
+          </View>
+
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: 18,
+              fontWeight: "bold",
+              marginBottom: 16,
+            }}
+          >
+            Quanto Quer Guardar?
+          </Text>
+
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+            }}
+          >
+            {investmentOptions.map((option) => {
+              const selected = investmentAmount === option.amount.toString();
+
+              return (
+                <View
+                  key={option.amount}
+                  style={{
+                    width: "48%",
+                    backgroundColor: selected ? "#DFF7E5" : "#F8F8F8",
+                    borderWidth: 2,
+                    borderColor: selected ? "#1EA84A" : "#DDD",
+                    borderRadius: 12,
+                    padding: 12,
+                    marginBottom: 12,
+                  }}
+                >
+                  <Text
+                    onPress={() =>
+                      setInvestmentAmount(option.amount.toString())
+                    }
+                    style={{
+                      textAlign: "center",
+                    }}
+                  >
+                    {option.emoji}
+                    {"\n"}
+                    {option.label}
+                    {"\n"}
+                    R$ {option.amount}
+                    {"\n"}
+                    {option.label === "Não Guardar"
+                      ? "Deixar tudo na carteira"
+                      : option.label === "Pouco"
+                        ? "Guardar um pouquinho"
+                        : option.label === "Médio"
+                          ? "Guardar uma parte"
+                          : "Guardar bastante"}
+                    {"\n"}
+                    Em 1 ano: R$ {Math.floor(option.amount * 1.15)}
+                  </Text>
+
+                  <View
+                    style={{
+                      height: 8,
+                      backgroundColor: "#19A84A",
+                      borderRadius: 4,
+                      marginTop: 8,
+                    }}
+                  />
+                </View>
+              );
+            })}
+          </View>
+
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginTop: 10,
+            }}
+          >
+            <Text
+              onPress={() => setCurrentStep("expenses")}
+              style={{
+                backgroundColor: "#3267E3",
+                color: "#FFF",
+                padding: 12,
+                borderRadius: 10,
+                fontWeight: "bold",
+                width: "48%",
+                textAlign: "center",
+              }}
+            >
+              Voltar
+            </Text>
+
+            <Text
+              onPress={handleInvestmentConfirm}
+              style={{
+                backgroundColor: "#69D17D",
+                color: "#FFF",
+                padding: 12,
+                borderRadius: 10,
+                fontWeight: "bold",
+                width: "48%",
+                textAlign: "center",
+              }}
+            >
+              Confirmar Escolha
+            </Text>
+          </View>
+        </View>
       </View>
     );
   }
